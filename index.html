@@ -4,144 +4,656 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我们的产品</title>
+    <title>我的个人博客 - 简约版</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-light: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border-color: #e5e7eb;
+            --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            padding-top: 7px;
-            /* 为固定的导航栏预留足够空间 */
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'WenQuanYi Micro Hei', 'Microsoft YaHei', sans-serif;
-            /* 更现代的字体栈示例 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            /* 简约风格背景选项 */
         }
 
-        /* .product-hero 已经用 Bootstrap 类替代，可以移除或保留特定样式 */
-        /* .product-hero {
-            background-color: #f8f9fa;
-            padding: 2rem 0;
-            margin-bottom: 3rem;
-        } */
-
-        .product-card .card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        /* 背景选项 1: 极简白色 + 微妙纹理 */
+        .bg-option-1 {
+            background: #fefefe;
+            background-image:
+                radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.02) 0%, transparent 50%);
         }
 
-        .product-card .card:hover {
-            transform: translateY(-5px);
-            /* 轻微上移效果 */
-            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
-            /* 增加阴影 */
+        /* 背景选项 2: 淡雅渐变 */
+        .bg-option-2 {
+            background: linear-gradient(135deg,
+                    rgba(249, 250, 251, 1) 0%,
+                    rgba(243, 244, 246, 1) 50%,
+                    rgba(249, 250, 251, 1) 100%);
         }
 
-        .card-img-top {
-            width: 100%;
-            /* 考虑为所有卡片图片设置一个统一的高度或宽高比，以使布局更整齐 */
-            height: auto;
-            /* 示例：统一高度 */
-            object-fit: cover;
-            /* 图片会被裁剪以填充此区域，保持宽高比 */
+        /* 背景选项 3: 微妙几何网格 */
+        .bg-option-3 {
+            background: #ffffff;
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.01) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
 
-        /* .footer 已经用 Bootstrap 类替代，可以移除 */
-        /* .footer {
-            background-color: #343a40;
+        /* 背景选项 4: 柔和点状纹理 */
+        .bg-option-4 {
+            background: #fafbfc;
+            background-image: radial-gradient(circle, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* 背景选项 5: 极简条纹 */
+        .bg-option-5 {
+            background: linear-gradient(180deg,
+                    #ffffff 0%,
+                    #fafbfc 50%,
+                    #ffffff 100%);
+            background-size: 100% 100px;
+        }
+
+        /* 当前使用的背景 - 可以切换上面任意一个 */
+        body {
+            background: #fefefe;
+            background-image:
+                radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.02) 0%, transparent 50%);
+        }
+
+        /* 导航栏 - 简约透明设计 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(20px) saturate(180%);
+            border: none;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.4rem;
+            color: var(--text-primary) !important;
+            transition: var(--transition);
+            letter-spacing: -0.025em;
+        }
+
+        .navbar-brand:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            color: var(--text-secondary) !important;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+            padding: 0.75rem 1rem !important;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            margin: 0 0.25rem;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0.25rem;
+            left: 50%;
+            background: var(--primary-color);
+            transition: var(--transition);
+            transform: translateX(-50%);
+            border-radius: 1px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color) !important;
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 70%;
+        }
+
+        /* 页眉 - 极简设计 */
+        .blog-masthead {
+            background: transparent;
+            padding: 4rem 0 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .blog-masthead h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .blog-masthead p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 0;
+            font-weight: 400;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            margin: 0 auto 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 文章卡片 - 极简风格 */
+        .post-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            padding: 2.5rem 2rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .post-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--primary-color);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .post-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-medium);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .post-card:hover::before {
+            opacity: 1;
+        }
+
+        .post-title a {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: var(--transition);
+            display: block;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+            line-height: 1.3;
+        }
+
+        .post-title a:hover {
+            color: var(--primary-color);
+        }
+
+        .post-meta {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .post-meta i {
+            color: var(--primary-color);
+            margin-right: 0.4rem;
+            font-size: 0.85rem;
+        }
+
+        .post-category {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .post-category:hover {
+            background: var(--primary-color);
             color: white;
-            padding: 2rem 0;
-        } */
+        }
 
-        /* 增加一些全局的圆角和过渡效果 */
-        .card,
-        .btn,
-        .form-control {
-            border-radius: 0.375rem;
-            /* Bootstrap 默认圆角风格 */
+        .post-excerpt {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .btn-read-more {
+            background: var(--text-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: none;
+        }
+
+        .btn-read-more:hover {
+            background: var(--primary-color);
+            transform: translateY(-1px);
+            color: white;
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* 分页 - 极简设计 */
+        .pagination {
+            margin-top: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .page-link {
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            background: var(--bg-primary);
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .page-link:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .page-item.active .page-link {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .page-item.disabled .page-link {
+            color: var(--text-light);
+            background: var(--bg-tertiary);
+            border-color: var(--border-color);
+            cursor: not-allowed;
+        }
+
+        /* 页脚 - 极简设计 */
+        .blog-footer {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .footer-about h4 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-about p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+
+        .footer-social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            margin: 0 0.4rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .footer-social-links a:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .footer-copyright {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        /* 动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.1s forwards;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .blog-masthead {
+                padding: 3rem 0 2rem;
+            }
+
+            .blog-masthead h1 {
+                font-size: 2.5rem;
+            }
+
+            .post-card {
+                padding: 2rem 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .post-title a {
+                font-size: 1.5rem;
+            }
+
+            .post-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .page-link {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.9rem;
+                min-width: 40px;
+                min-height: 40px;
+            }
+        }
+
+        /* 滚动条 - 极简设计 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-light);
         }
     </style>
 </head>
 
 <body>
-    <header class="text-center bg-light py-5 mb-5">
-        <div class="container">
-            <img src="./images/顶端图片.jpg" alt="产品主图展示" class="img-fluid rounded shadow-sm">
-        </div>
-    </header>
+    <div id="app">
+        <nav class="navbar navbar-expand-lg sticky-top">
+            <div class="container">
+                <a class="navbar-brand" href="#">{{ siteTitle }}</a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAlt">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAlt">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">首页</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">归档</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">标签</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">关于</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-    <main class="container" id="products">
-        <h2 class="text-center mb-5 display-5 ">我们的资质与产品</h2>
-        <div class="row gy-4">
-            <div class="col-lg-3 col-md-6 product-card">
-                <div class="card h-100 shadow-sm">
-                    <img src="./images/商品信息.png " class="card-img-top" loading="lazy" alt="商品信息">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">商品信息</h5>
+        <header class="blog-masthead">
+            <div class="container">
+                <h1>{{ pageTitle }}</h1>
+                <p>{{ pageSubtitle }}</p>
+            </div>
+        </header>
+
+        <main class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="main-content p-4 p-md-5">
+                        <div v-for="(post, index) in posts" :key="post.id" class="post-card loading"
+                            :style="{ animationDelay: (index * 0.1) + 's' }">
+                            <h2 class="post-title">
+                                <a :href="'#post-' + post.id">{{ post.title }}</a>
+                            </h2>
+                            <div class="post-meta">
+                                <span>
+                                    <i class="far fa-calendar"></i>
+                                    {{ formatDate(post.date) }}
+                                </span>
+                                <a v-if="post.category" :href="'#category-' + post.category" class="post-category">
+                                    {{ post.category }}
+                                </a>
+                                <span>
+                                    <i class="far fa-clock"></i>
+                                    {{ post.readTime || '3' }} 分钟
+                                </span>
+                            </div>
+                            <p class="post-excerpt">{{ post.excerpt }}</p>
+                            <a :href="'#post-' + post.id" class="btn-read-more">
+                                阅读全文
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <nav aria-label="分页导航" class="mt-5" v-if="posts.length > 0">
+                            <ul class="pagination">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item active">
+                                    <a class="page-link" href="#">1</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">2</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">3</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
+        </main>
 
-            <div class="col-lg-3 col-md-6 product-card">
-                <div class="card h-100 shadow-sm">
-                    <img src="./images/营业执照.jpg" class="card-img-top" loading="lazy" alt="营业执照">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">营业执照</h5>
-                    </div>
+        <footer class="blog-footer">
+            <div class="container">
+                <div class="footer-about">
+                    <h4>{{ siteTitle }}</h4>
+                    <p>专注于分享技术见解与生活感悟，在简约中寻找美好。</p>
+                </div>
+
+                <div class="footer-social-links mb-3">
+                    <a href="#" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" title="邮箱">
+                        <i class="far fa-envelope"></i>
+                    </a>
+                </div>
+
+                <div class="footer-copyright">
+                    <p>&copy; {{ new Date().getFullYear() }} {{ siteTitle }}. 简约而不简单</p>
                 </div>
             </div>
-
-            <div class="col-lg-3 col-md-6 product-card">
-                <div class="card h-100 shadow-sm">
-                    <img src="./images/食品生产许可证.jpg" class="card-img-top" loading="lazy" alt="食品生产许可证">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">食品生产许可证</h5>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6 product-card">
-                <div class="card h-100 shadow-sm">
-                    <img src="./images/检验检测报告.jpg" class="card-img-top" loading="lazy" alt="检验检测报告">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">检验检测报告</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <section id="about" class="py-5 bg-light mt-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-center">
-                    <img src="./images/底部图片.jpg" loading="lazy" alt="关于我们图片" class="img-fluid rounded shadow">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-5 display-6">联系我们</h2>
-            <div class="row">
-                <div class="col-md-8 mx-auto text-center">
-                    <p class="lead">有任何疑问或想了解更多信息？请通过以下方式联系我们：</p>
-                    <hr class="my-4">
-                    <p class="fs-5"><i class="bi bi-envelope-fill text-primary me-2"></i><strong>邮箱:</strong>
-                        starmanproton@gmail.com </p>
-                    <p class="fs-5"><i class="bi bi-telephone-fill text-primary me-2"></i><strong>电话:</strong>
-                    </p>
-                    <p class="fs-5"><i class="bi bi-geo-alt-fill text-primary me-2"></i><strong>地址:</strong>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="text-center bg-dark text-white py-4">
-        <div class="container">
-            <p class="mb-0">&copy; 2024-2025 </p>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    siteTitle: '简约博客',
+                    pageTitle: '思绪角落',
+                    pageSubtitle: '一个记录与分享的空间',
+                    posts: [
+                        {
+                            id: 1,
+                            title: '拥抱简约：少即是多的设计哲学',
+                            date: '2025-06-03',
+                            category: '设计哲学',
+                            readTime: '5',
+                            excerpt: '在这个信息爆炸的时代，简约设计不仅仅是一种风格，更是一种对清晰和专注的追求。通过减少不必要的元素，我们能够让真正重要的内容脱颖而出，为用户创造更加纯净的体验。',
+                            content: '完整的博文内容...'
+                        },
+                        {
+                            id: 2,
+                            title: 'Vue 3 组合式 API 的魅力与实践',
+                            date: '2025-06-01',
+                            category: '前端技术',
+                            readTime: '8',
+                            excerpt: '组合式 API 是 Vue 3 带来的重大更新之一，它为我们组织和复用代码逻辑提供了新的可能性。本文将深入探讨如何利用组合式 API 构建更加优雅和可维护的 Vue 应用。',
+                            content: '完整的博文内容...'
+                        },
+                        {
+                            id: 3,
+                            title: '一杯咖啡的冥想时光',
+                            date: '2025-05-28',
+                            category: '生活感悟',
+                            readTime: '3',
+                            excerpt: '清晨，阳光透过窗帘的缝隙洒在桌案上，一杯热气腾腾的咖啡静静等待。在这个快节奏的世界里，让我们暂停脚步，用心感受生活中那些简单而美好的瞬间。',
+                            content: '完整的博文内容...'
+                        }
+                    ]
+                }
+            },
+            methods: {
+                formatDate(dateString) {
+                    const date = new Date(dateString)
+                    const options = {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    }
+                    return date.toLocaleDateString('zh-CN', options)
+                }
+            },
+            mounted() {
+                // 平滑滚动效果
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault()
+                        const target = document.querySelector(this.getAttribute('href'))
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            })
+                        }
+                    })
+                })
+            }
+        }).mount('#app');
+    </script>
 </body>
 
 </html>
